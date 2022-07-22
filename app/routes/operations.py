@@ -2,6 +2,8 @@ import logging
 
 from fastapi import APIRouter, status
 
+from app.functions.shortener import generate_code
+
 from app.models.operations import (
     Urls,
     Urls_Pydantic,
@@ -20,10 +22,11 @@ router = APIRouter(
 async def shorten_url(url: UrlOriginal):
     try:
         url_original = url.url_original
+        code = generate_code(length=5)
 
         obj = await Urls.create(
             url_original=url_original,
-            url_shorten="Test",
+            url_shorten=f"https://fnddr.sh/{code}",
         )
         return await Urls_Pydantic.from_tortoise_orm(obj)
     except Exception as e:
