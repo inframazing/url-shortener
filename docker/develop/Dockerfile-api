@@ -1,0 +1,23 @@
+# Image
+FROM python:3.9
+
+# Labels
+LABEL company="Fondeadora" \
+project="url-shortener"
+
+# Directories
+WORKDIR /app
+
+# Environments
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Dependencies
+COPY ./requirements.txt requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+# Ports
+EXPOSE 9000
+
+# Files
+COPY . .

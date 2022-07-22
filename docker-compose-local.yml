@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+    fondeadora-url-shortener-api:
+        container_name: fondeadora-url-shortener-api
+        image: fondeadora/url-shortener-api:local
+        build:
+            context: .
+            dockerfile: ./docker/local/Dockerfile-api
+        depends_on:
+            - fondeadora-url-shortener-db
+        ports:
+            - "3404:8000"
+        volumes:
+            - ".:/app"
+        command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+        networks:
+            - fondeadora_network
+        restart: always
+
+    fondeadora-url-shortener-db:
+        container_name: fondeadora-url-shortener-db
+        image: fondeadora/url-shortener-db:local
+        build:
+            context: .
+            dockerfile: ./docker/local/Dockerfile-db
+        ports:
+            - "2345:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=url-shortener
+            - POSTGRES_USER=fondeadora
+            - POSTGRES_PASSWORD=_Fondeadora2022*
+        networks:
+            - fondeadora_network
+        restart: always
+
+networks:
+    fondeadora_network:
+        driver: bridge
+
+volumes:
+    static-files:
+        driver: local
+    pgdata:
+        driver: local

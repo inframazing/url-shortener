@@ -1,0 +1,9 @@
+# Image
+FROM postgres:latest
+
+# Labels
+LABEL company="Fondeadora" \
+project="url-shortener"
+
+# Ports
+EXPOSE 2345
