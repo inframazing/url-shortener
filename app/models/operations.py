@@ -6,17 +6,16 @@ from pydantic import BaseModel
 
 class Urls(Model):
     id = fields.IntField(pk=True)
-    original_url = fields.CharField(max_length=150)
-    shortener_url = fields.CharField(max_length=50)
+    url_original = fields.CharField(max_length=150)
+    url_shorten = fields.CharField(max_length=50, unique=True)
     created_at = fields.DatetimeField(auto_now_add=True)
 
     class Meta:
         table = 'TA_Urls'
 
 
-class UrlsBody(BaseModel):
-    original_url: str
-    shortener_url: str
+class UrlOriginal(BaseModel):
+    url_original: str
 
 
 Urls_Pydantic = pydantic_model_creator(Urls, name='Urls')
